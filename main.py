@@ -5,58 +5,76 @@ from keep_alive import keep_alive
 
 agents = [{
     'nome': 'Neon',
-    'image': 'imagens/neon.jpg'
+    'image': 'imagens/neon.jpg', 
+    'gif': 'https://tenor.com/bOunQ.gif'
 }, {
     'nome': 'Chamber',
-    'image': 'imagens/xambinho.jpg'
+    'image': 'imagens/xambinho.jpg', 
+    'gif': 'https://tenor.com/bPeJp.gif'
 }, {
     'nome': 'Skye',
-    'image': 'imagens/skye.jpg'
+    'image': 'imagens/skye.jpg', 
+    'gif': 'https://tenor.com/bqRnS.gif'
 }, {
     'nome': 'Yoru',
-    'image': 'imagens/yoru.png'
+    'image': 'imagens/yoru.png', 
+    'gif': 'https://tenor.com/bvCRZ.gif'
 }, {
     'nome': 'Astra',
-    'image': 'imagens/astra.png'
+    'image': 'imagens/astra.png', 
+    'gif': 'https://tenor.com/bFdL7.gif'
 }, {
     'nome': 'KAY/O',
-    'image': 'imagens/caio.jpg'
+    'image': 'imagens/caio.jpg', 
+    'gif': 'https://tenor.com/bFHwm.gif'
 }, {
     'nome': 'Fenix',
-    'image': 'imagens/fenix.png'
+    'image': 'imagens/fenix.png', 
+    'gif': 'https://tenor.com/bQayi.gif'
 }, {
     'nome': 'Raze',
-    'image': 'imagens/raize.png'
+    'image': 'imagens/raize.png', 
+    'gif': 'https://tenor.com/bNtSD.gif'
 }, {
     'nome': 'Brimstone',
-    'image': 'imagens/brimstone.jpg'
+    'image': 'imagens/brimstone.jpg', 
+    'gif': 'https://tenor.com/bvbtQ.gif'
 }, {
     'nome': 'Jett',
-    'image': 'imagens/jett.jpg'
+    'image': 'imagens/jett.jpg', 
+    'gif': 'https://tenor.com/bEHcn.gif'
 }, {
     'nome': 'Sage',
-    'image': 'imagens/sage.jpg'
+    'image': 'imagens/sage.jpg', 
+    'gif': 'https://tenor.com/bHhhf.gif'
 }, {
     'nome': 'Viper',
-    'image': 'imagens/viper.png'
+    'image': 'imagens/viper.png', 
+    'gif': 'https://tenor.com/bLlJA.gif'
 }, {
     'nome': 'Breach',
-    'image': 'imagens/breach.png'
+    'image': 'imagens/breach.png', 
+    'gif': 'https://tenor.com/bJmAo.gif'
 }, {
     'nome': 'Cypher',
-    'image': 'imagens/cypher.jpg'
+    'image': 'imagens/cypher.jpg', 
+    'gif': 'https://tenor.com/bovkI.gif'
 }, {
     'nome': 'Sova',
-    'image': 'imagens/sova.jpg'
+    'image': 'imagens/sova.jpg', 
+    'gif': 'https://tenor.com/bCbue.gif'
 }, {
     'nome': 'Homem',
-    'image': 'imagens/omem.jpg'
+    'image': 'imagens/omem.jpg', 
+    'gif': 'https://tenor.com/bD7OT.gif'
 }, {
     'nome': 'Reyna',
-    'image': 'imagens/reina.jpg'
+    'image': 'imagens/reina.jpg', 
+    'gif': 'https://tenor.com/bO4GA.gif'
 }, {
     'nome': 'Killjoy',
-    'image': 'imagens/killjoy.png'
+    'image': 'imagens/killjoy.png', 
+    'gif': 'https://tenor.com/bDx6X.gif'
 }]
 
 armas = [{
@@ -129,7 +147,7 @@ async def on_message(message):
 
     if message.content == '$agente':
       chosen = choice(agents)
-      await message.reply(file=discord.File(chosen['image']),content=chosen['nome'])
+      await message.reply(file=discord.File(chosen['image']),content=f"{chosen['nome']}\n{chosen['gif']}")
 
     if message.content == '$armas':
       arma = choice(armas)

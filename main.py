@@ -1,7 +1,10 @@
 import discord
+from discord.ext import commands
 import os
 from random import choice
 from keep_alive import keep_alive
+import asyncio
+import valorantstats
 
 agents = [{'nome': 'Neon', 'image': 'imagens/neon.jpg', 'gif': 'https://tenor.com/bOunQ.gif'}, 
 {'nome': 'Chamber', 'image': 'imagens/xambinho.jpg', 'gif': 'https://tenor.com/bPeJp.gif'}, 
@@ -22,7 +25,7 @@ agents = [{'nome': 'Neon', 'image': 'imagens/neon.jpg', 'gif': 'https://tenor.co
 {'nome': 'Reyna', 'image': 'imagens/reina.jpg', 'gif': 'https://tenor.com/bO4GA.gif'}, 
 {'nome': 'Killjoy', 'image': 'imagens/killjoy.png', 'gif': 'https://tenor.com/bDx6X.gif'}]
 
-armas = [{'nome': 'Spectre', 'image': 'imagens/spectre.webp'}, 
+weapons = [{'nome': 'Spectre', 'image': 'imagens/spectre.webp'}, 
 {'nome': 'Odin', 'image': 'imagens/odin.jpg'}, 
 {'nome': 'Vandal', 'image': 'imagens/vandal.jpg'}, 
 {'nome': 'Bucky', 'image': 'imagens/bucky.webp'}, 
@@ -35,61 +38,101 @@ armas = [{'nome': 'Spectre', 'image': 'imagens/spectre.webp'},
 {'nome': 'Marhsall', 'image': 'imagens/marshall.jpg'}, 
 {'nome': 'Judge', 'image': 'imagens/judge.jpg'}]
 
-pistolas = [{'nome': 'Classic', 'image': 'imagens/classic.webp'}, 
+pistols = [{'nome': 'Classic', 'image': 'imagens/classic.webp'}, 
 {'nome': 'Shorty', 'image': 'imagens/shorty.jpg'}, 
 {'nome': 'Frenzy', 'image': 'imagens/frenzy.webp'}, 
 {'nome': 'Ghost', 'image': 'imagens/ghost.webp'}, 
 {'nome': 'Sheriff', 'image': 'imagens/sheriff.webp'}]
 
-valorant = ["valorant", "valorantes", "@valorantes"]
-
-client = discord.Client()
+client = commands.Bot(command_prefix = "$", help_command=None)
 
 @client.event
 async def on_ready():
-  print('Bora Jogar Valorant!'.format(client))
+	print('Bora Jogar Valorant!\n---------------')
+	await manoel()
+
+@client.command(pass_context = True)
+async def help(ctx):
+	await infoEmb(ctx.message)
+
+@client.command()
+async def agente(ctx):
+	chosen = choice(agents)
+	await ctx.message.reply(file=discord.File(chosen['image']),content=f"{chosen['nome']}\n{chosen['gif']}")
+
+@client.command()
+async def armas(ctx):
+	arma = choice(weapons)
+	pistola = choice(pistols)
+	#colocar nome na imagem
+	await ctx.message.channel.send(file=discord.File(arma['image']),content=arma['nome'])
+	await ctx.message.channel.send(file=discord.File(pistola['image']),content=pistola['nome'])
+
+@client.command()
+async def mghm(ctx):
+	await ctx.message.channel.send('https://media.discordapp.net/attachments/762328665870434334/915958010470367322/ezgif-4-877403be7b7f.gif')
+
+@client.command()
+async def ace(ctx):
+	if ctx.message.mentions:
+		await ctx.message.channel.send(f"<@{ctx.message.mentions[0].id}> \nhttps://tenor.com/view/dance-dancing-cute-ace-cheer-gif-16720867");
+	else:
+		await ctx.message.channel.send("https://tenor.com/view/dance-dancing-cute-ace-cheer-gif-16720867");
+
+@client.command()
+async def stats(ctx, args):
+	print(args)
+	await ctx.message.channel.send(embed=valorantstats.valstats(ctx.message))
 
 @client.event
 async def on_message(message):
-    if message.author == client.user:
-      return
+	#prioritize commands
+	await client.process_commands(message)
 
-    if message.content == '$agente':
-      chosen = choice(agents)
-      await message.reply(file=discord.File(chosen['image']),content=f"{chosen['nome']}\n{chosen['gif']}")
+	if message.author == client.user:
+		return
+	#remind to work after 20 minutes
+	if(message.content == '!work' and message.channel.id == int(os.getenv("CHANNEL_COMANDOS"))):
+		print("---\nesperar 20 minutos\n---")
+		await asyncio.sleep(1200)
+		await message.channel.send(f"<@{message.author.id}>\nhora de dar o work!")
+	#remind to work after 12 hours
+	if(message.content == '!vote' and message.channel.id == int(os.getenv("CHANNEL_COMANDOS"))):
+		print("---\nesperar 12 horas\n---")
+		message.reply("daqui 12 horas te aviso.")
+		await asyncio.sleep(43200)
+		await message.channel.send(f"<@{message.author.id}>\nhora de dar o vote!")
+	#if the bot is mentioned it responds
+	if client.user.mentioned_in(message) and message.mention_everyone is False:
+		await message.reply('O que tu quer?')
+	#if one of the words were said or if valorantes were mentioned it will answer
+	if (message.content.lower().find('valorant') > -1 or 
+	message.content.lower().find('vava') > -1 or 
+	os.getenv("ROLE_VALORANTES") in message.content):
+		await message.reply(content= f"Opa! Valorant? bora, logando... \n{os.getenv('RoleValorantes')}\nhttps://tenor.com/view/hasbulla-gif-22466319")
+	#ANAO
+	if (message.content.lower().find('anao') > -1 or 
+	message.content.lower().find('anão') > -1 or 
+	message.content.lower().find('a nao') > -1 or 
+	message.content.lower().find('ah nao') > -1 or
+	message.content.lower().find('a não') > -1 or 
+	message.content.lower().find('ah não') > -1):
+		await message.reply('https://tenor.com/vILU.gif')
 
-    if message.content == '$armas':
-      arma = choice(armas)
-      pistola = choice(pistolas)
-      await message.channel.send(file=discord.File(arma['image']),content=arma['nome'])
-      await message.channel.send(file=discord.File(pistola['image']),content=pistola['nome'])
+async def manoel():
+	#await client.get_channel(int(os.getenv("CHANNEL_VALORANT"))).send(f"<@{os.getenv('MANOEL')}>\nManoel meus 50%")
+	await asyncio.sleep(3600)
+	await manoel()
 
-    if message.content == '$mghm':
-      await message.channel.send('https://media.discordapp.net/attachments/762328665870434334/915958010470367322/ezgif-4-877403be7b7f.gif')
+async def infoEmb(message):
+	info_embed = discord.Embed(color=discord.Color.green())
+	info_embed.set_thumbnail(url='https://media.discordapp.net/attachments/762328665870434334/915958010470367322/ezgif-4-877403be7b7f.gif')
+	info_embed.add_field(name="$agente", value='escolhe um agente aleatorio', inline=False)
+	info_embed.add_field(name="$armas", value='escolhe um arma e um pistola aleatoria', inline=False)
+	info_embed.add_field(name="$mghm", value='gif lendario do nosso mestre', inline=False)
+	info_embed.add_field(name="$ace (+ @mençao)", value='@mençao com um gif top', inline=False)
 
-    if message.content == '$help':
-      await info(message)
-
-    if message.content.lower().find('valorant') > -1 or message.content.lower().find('vava') > -1 or os.getenv("RoleValorantes") in message.content:
-      await message.reply(content= f"Opa! Valorant? bora, logando... \n{os.getenv('RoleValorantes')}\nhttps://tenor.com/view/hasbulla-gif-22466319")
-
-    if client.user.mentioned_in(message) and message.mention_everyone is False:
-      await message.reply('O que tu quer?')
-
-    if (message.content.lower().find('anao') > -1 or 
-    message.content.lower().find('anão') > -1 or 
-    message.content.lower().find('a nao') > -1 or 
-    message.content.lower().find('ah nao') > -1):
-      await message.reply('https://tenor.com/vILU.gif');
-
-async def info(message):
-    info_embed = discord.Embed(color=discord.Color.green())
-    info_embed.set_thumbnail(url='https://media.discordapp.net/attachments/762328665870434334/915958010470367322/ezgif-4-877403be7b7f.gif')
-    info_embed.add_field(name="$agente", value='escolhe um agente aleatorio', inline=False)
-    info_embed.add_field(name="$armas", value='escolhe um arma e um pistola aleatoria', inline=False)
-    info_embed.add_field(name="$mghm", value='gif lendario do nosso mestre', inline=False)
-
-    await message.channel.send(embed=info_embed)
+	await message.channel.send(embed=info_embed)
 
 keep_alive()
 client.run(os.getenv("TOKEN"))
@@ -109,4 +152,4 @@ async def info(ctx, member: discord.Member):
     info_embed.set_footer(text="GG-GamerPub | auto-mod")
 
     await ctx.send(embed=info_embed)
-'''
+''' 

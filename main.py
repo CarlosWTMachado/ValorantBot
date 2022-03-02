@@ -49,7 +49,6 @@ client = commands.Bot(command_prefix = "$", help_command=None)
 @client.event
 async def on_ready():
 	print('Bora Jogar Valorant!\n---------------')
-	await manoel()
 
 @client.command(pass_context = True)
 async def help(ctx):
@@ -91,44 +90,20 @@ async def on_message(message):
 
 	if message.author == client.user:
 		return
-	#remind to work after 20 minutes
-	if(message.content == '!work' and message.channel.id == int(os.getenv("CHANNEL_COMANDOS"))):
-		print("---\nesperar 20 minutos\n---")
-		await asyncio.sleep(1200)
-		await message.channel.send(f"<@{message.author.id}>\nhora de dar o work!")
-	#remind to work after 12 hours
-	if(message.content == '!vote' and message.channel.id == int(os.getenv("CHANNEL_COMANDOS"))):
-		print("---\nesperar 12 horas\n---")
-		message.reply("daqui 12 horas te aviso.")
-		await asyncio.sleep(43200)
-		await message.channel.send(f"<@{message.author.id}>\nhora de dar o vote!")
 	#if the bot is mentioned it responds
 	if client.user.mentioned_in(message) and message.mention_everyone is False:
-		await message.reply('O que tu quer?')
+		await message.reply('Use $help pra ver os comandos.')
 	#if one of the words were said or if valorantes were mentioned it will answer
 	if (message.content.lower().find('valorant') > -1 or 
 	message.content.lower().find('vava') > -1 or 
 	os.getenv("ROLE_VALORANTES") in message.content):
 		await message.reply(content= f"Opa! Valorant? bora, logando... \n{os.getenv('RoleValorantes')}\nhttps://tenor.com/view/hasbulla-gif-22466319")
-	#ANAO
-	if (message.content.lower().find('anao') > -1 or 
-	message.content.lower().find('anão') > -1 or 
-	message.content.lower().find('a nao') > -1 or 
-	message.content.lower().find('ah nao') > -1 or
-	message.content.lower().find('a não') > -1 or 
-	message.content.lower().find('ah não') > -1):
-		await message.reply('https://tenor.com/vILU.gif')
-
-async def manoel():
-	#await client.get_channel(int(os.getenv("CHANNEL_VALORANT"))).send(f"<@{os.getenv('MANOEL')}>\nManoel meus 50%")
-	await asyncio.sleep(3600)
-	await manoel()
 
 async def infoEmb(message):
 	info_embed = discord.Embed(color=discord.Color.green())
 	info_embed.set_thumbnail(url='https://media.discordapp.net/attachments/762328665870434334/915958010470367322/ezgif-4-877403be7b7f.gif')
 	info_embed.add_field(name="$agente", value='escolhe um agente aleatorio', inline=False)
-	info_embed.add_field(name="$armas", value='escolhe um arma e um pistola aleatoria', inline=False)
+	info_embed.add_field(name="$armas", value='escolhe um arma e uma pistola aleatoria', inline=False)
 	info_embed.add_field(name="$mghm", value='gif lendario do nosso mestre', inline=False)
 	info_embed.add_field(name="$ace (+ @mençao)", value='@mençao com um gif top', inline=False)
 
@@ -136,20 +111,3 @@ async def infoEmb(message):
 
 keep_alive()
 client.run(os.getenv("TOKEN"))
-
-'''
-async def info(ctx, member: discord.Member):
-
-    info_embed = discord.Embed(color=discord.Color.green())
-    info_embed.set_thumbnail(url=f"{member.avatar_url_as(format=None, static_format='webp', size=1024)}")
-    info_embed.add_field(name="Member:", value=f"{member.mention}", inline=False)
-    info_embed.add_field(name="Member name", value=f"{member}", inline=False)
-    info_embed.add_field(name="Member id:", value=f"{member.id}", inline=False)
-    info_embed.add_field(name="Nickname:", value=f"{member.nick}", inline=False)
-    info_embed.add_field(name="Joined at:", value=f"{member.joined_at}", inline=False)
-    roles = " ".join([role.mention for role in member.roles if role.name != "@everyone"])
-    info_embed.add_field(name="Roles:", value=f"{roles}", inline=False)
-    info_embed.set_footer(text="GG-GamerPub | auto-mod")
-
-    await ctx.send(embed=info_embed)
-''' 

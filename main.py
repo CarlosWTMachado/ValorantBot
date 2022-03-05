@@ -137,13 +137,12 @@ pistols = [{
 
 client = commands.Bot(command_prefix="$", help_command=None)
 
-
 @client.event
 async def on_ready():
-    print('Bora Jogar Valorant!\n---------------')
-    await manoel()
-    await basilisco()
-
+	print('Bora Jogar Valorant!\n---------------')
+	await client.get_channel( int( os.getenv("CHANNEL_VALORANT") ) ).send('Opa! To vivo!\nTa na hora do vava ja?')
+	await manoel()
+	await basilisco()
 
 @client.command(pass_context=True)
 async def help(ctx):
@@ -260,16 +259,15 @@ async def on_message(message):
 
 
 async def manoel():
-    #await client.get_channel(int(os.getenv("CHANNEL_VALORANT"))).send(f"<@{os.getenv('MANOEL')}>\nManoel meus 50%")
-    await asyncio.sleep(3600)
-    await manoel()
+	#await client.get_channel(int(os.getenv("CHANNEL_VALORANT"))).send(f"<@{os.getenv('MANOEL')}>\nManoel meus 50%")
+	await asyncio.sleep(3600)
+	await manoel()
 
 
 async def basilisco():
-    await client.get_channel(int(os.getenv("CHANNEL_VALORANT"))
-                             ).send("Ja ajudou o Basilisco hoje?")
-    await asyncio.sleep(3600)
-    await basilisco()
+	await client.get_channel( int( os.getenv("CHANNEL_VALORANT") ) ).send("Ja ajudou o Basilisco hoje?")
+	await asyncio.sleep(3600)
+	await basilisco()
 
 
 async def infoEmb(message):

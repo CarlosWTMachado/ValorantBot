@@ -1,4 +1,8 @@
-from discord.colour import Colour
+'''
+Codigo retirado de:
+https://github.com/shaheriar/VALWATCH/blob/main/valorantstats.py
+'''
+
 import requests
 from bs4 import BeautifulSoup
 import discord

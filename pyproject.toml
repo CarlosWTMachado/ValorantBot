@@ -16,6 +16,8 @@ django-ffmpeg = "^0.1.6"
 python-ffmpeg = "^1.0.13"
 ffmpeg-python = "^0.2.0"
 bs4 = "^0.0.1"
+requests = "^2.27.1"
+replit = "^3.2.4"
 
 [tool.poetry.dev-dependencies]
 
